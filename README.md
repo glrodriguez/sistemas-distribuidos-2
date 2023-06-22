@@ -40,7 +40,7 @@ git clone git@github.com:codexponent/animeflix.git
 # # For backend
 cd backend
 pip install -r requirements.txt
-pytrhon main.py
+python main.py
 
 # # For Frontend
 cd frontend/

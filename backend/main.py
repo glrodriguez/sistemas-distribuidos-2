@@ -31,9 +31,24 @@ config.read('config.ini')
 from datetime import date, datetime, timedelta
 import mysql.connector
 
-cnx = mysql.connector.connect(user=config['MYSQL']['user'], password=config['MYSQL']['password'],
-                              host=config['MYSQL']['host'],
-                              database=config['MYSQL']['database'])
+#database = 'sistemas-distribuidos'
+#host = 'sistemas-distribuidos.cbo6e5ac7dbb.us-east-1.rds.amazonaws.com'
+#user = 'admin'
+#password = 'eldani_99'
+
+database = 'sistemas-distribuidos'
+host = 'localhost'
+user = 'root'
+password = 'root'
+
+cnx = mysql.connector.connect(
+    host=host,
+    user=user,
+    password=password,
+    database=database
+)
+
+#cnx = mysql.connector.connect(user=config['MYSQL']['user'], password=config['MYSQL']['password'], host=config['MYSQL']['host'], database=config['MYSQL']['database'])
 # cnx.close()
 cursor = cnx.cursor(buffered=True)
 
@@ -67,8 +82,9 @@ def singin():
 	# cursor = cnx.cursor()
 	
 	# select_customer = (:SELEC:)
-	query = ("SELECT email, enc_password FROM customer WHERE email = %s AND enc_password = %s")
-	cursor.execute(query, (email, enc_password))
+	query = "SELECT email, enc_password FROM Customer WHERE email = '" + email + "' AND enc_password = '" + enc_password + "'"
+	print("query:" + query)
+	cursor.execute(query)
 
 	print('cursor')#, file=sys.stderr)
 	print(cursor)
@@ -84,7 +100,7 @@ def singin():
 		print('Failure')
 		status= 'Failure'
 
-	return jsonify({ 'status': status})
+	return jsonify({'status': status})
 	
 	# cnx.commit()
 	# cursor.close()
@@ -114,14 +130,9 @@ def upload_image():
 	phone=''#request.form.get("phone", "")
 	genres=''#request.form.get("genres", "")
 	
-
-	
-	add_customer = ("INSERT INTO customer "
-                "(firstname, lastname, gender, phone, email, enc_password, genres, plan) "
-                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)")
+	add_customer = "INSERT INTO Customer (firstname, lastname, gender, phone, email, enc_password, genres, plan) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
 				
-	data_customer = (firstname, lastname, gender, phone, 
-                        email, enc_password, genres, plan)
+	data_customer = (firstname, lastname, gender, phone, email, enc_password, genres, plan)
 						
 	cursor.execute(add_customer, data_customer)
 	cnx.commit()
