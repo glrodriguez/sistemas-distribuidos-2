@@ -4,7 +4,6 @@ __pycache__/
 *$py.class
 
 # # Custom
-frontend/src/config.json
 backend/config.ini
 frontend/node_modules/*
 
